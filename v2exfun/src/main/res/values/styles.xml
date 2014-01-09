@@ -1,0 +1,17 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="actionBarStyle">@style/v2exfun.actionbar</item>
+        <item name="android:actionBarStyle">@style/v2exfun.actionbar</item>
+
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="v2exfun"/>
+
+    <style name="v2exfun.actionbar" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@drawable/ab_solid_v2exfun</item>
+    </style>
+</resources>
