@@ -86,7 +86,7 @@ public class LatestListAdapter extends BaseAdapter {
 //        }
 
         //创建时间
-        viewHolder.createTime.setText(CommonUtils.getLastTime(getItem(position).getCreated().longValue()));
+//        viewHolder.createTime.setText(CommonUtils.getLastTime(getItem(position).getCreated().longValue()));
 
         //作者用户名
         viewHolder.authorName.setText(getItem(position).getMember().getUsername());
