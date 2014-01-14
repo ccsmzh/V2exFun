@@ -1,6 +1,8 @@
 
 package org.gino.v2exfun.serialize.model;
 
+import org.gino.v2exfun.utils.CommonUtils;
+
 import java.io.Serializable;
 
 public class Topic implements Serializable{
@@ -15,6 +17,8 @@ public class Topic implements Serializable{
    	private Number replies;
    	private String title;
    	private String url;
+
+    private String createdTimeShowStr;
 
  	public String getContent(){
 		return this.content;
@@ -82,4 +86,15 @@ public class Topic implements Serializable{
 	public void setUrl(String url){
 		this.url = url;
 	}
+
+    public String getShowCreatedTime(){
+        if(created != null){
+            createdTimeShowStr = CommonUtils.getLastTime(getCreated().longValue());
+        }
+        return createdTimeShowStr;
+    }
+
+    public void setCreatedTimeShowStr(String createdTimeShowStr) {
+        this.createdTimeShowStr = createdTimeShowStr;
+    }
 }

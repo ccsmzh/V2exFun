@@ -16,6 +16,8 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by zhuohong on 14-1-6.
@@ -30,6 +32,8 @@ public class V2exTopicsParser {
                 Topic tmpTopic = new Topic();
                 tmpTopic.setTitle(element.select("span.item_title").first().text());
                 tmpTopic.setReplies(new LazilyParsedNumber(links.select("a.count_livid").first().text()));
+                String tmpTimeStr = element.select("span.small.fade").text().split("•")[1];
+                tmpTopic.setCreatedTimeShowStr(tmpTimeStr.substring(tmpTimeStr.indexOf(" ",2)).replace(" ",""));
 
                 Node tmpNode = new Node();
                 Elements smallLinks = element.select("span.small.fade").select("a[href]");
