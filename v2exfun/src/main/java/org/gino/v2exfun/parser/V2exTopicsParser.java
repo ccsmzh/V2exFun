@@ -23,17 +23,24 @@ import java.util.regex.Pattern;
  * Created by zhuohong on 14-1-6.
  */
 public class V2exTopicsParser {
-    public List<Topic> getV2exNearly50Tipics(){
+    public List<Topic> getV2exNearly50Tipics() {
         List<Topic> tmpTopics = new ArrayList<Topic>();
         try {
             Document doc = Jsoup.connect(ComConst.HTTP_ALL_MAIN_LIST_JSOUP_URL).get();
             Elements links = doc.select("div.cell.item");
-            for(Element element : links){
+            for (Element element : links) {
                 Topic tmpTopic = new Topic();
                 tmpTopic.setTitle(element.select("span.item_title").first().text());
-                tmpTopic.setReplies(new LazilyParsedNumber(links.select("a.count_livid").first().text()));
+                tmpTopic.setId(new LazilyParsedNumber(element.select("span.item_title").select("a").attr("href")));
+                Elements tmpCountLividLink = element.select("a.count_livid");
+                if(tmpCountLividLink != null && tmpCountLividLink.size() > 0){
+                    tmpTopic.setReplies(new LazilyParsedNumber(element.select("a.count_livid").first().text()));
+                }else{
+                    tmpTopic.setReplies(new LazilyParsedNumber("0"));
+                }
                 String tmpTimeStr = element.select("span.small.fade").text().split("•")[1];
-                tmpTopic.setCreatedTimeShowStr(tmpTimeStr.substring(tmpTimeStr.indexOf(" ",2)).replace(" ",""));
+                tmpTopic.setCreatedTimeShowStr(tmpTimeStr.substring(tmpTimeStr.indexOf(" ", 2)).replace(" ", ""));
+
 
                 Node tmpNode = new Node();
                 Elements smallLinks = element.select("span.small.fade").select("a[href]");
