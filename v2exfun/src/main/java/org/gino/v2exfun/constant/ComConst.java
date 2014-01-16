@@ -5,7 +5,7 @@ package org.gino.v2exfun.constant;
  */
 public class ComConst {
     private static final String HTTP_BASE_API_URL = "http://v2ex.com/api";
-    private static final String HTTP_BASE_POST_URL = "http://v2ex.com";
+    public static final String HTTP_BASE_POST_URL = "http://v2ex.com";
 
     public static final String HTTP_IMAGE_BASE_URL = "http://v2ex.com";
 

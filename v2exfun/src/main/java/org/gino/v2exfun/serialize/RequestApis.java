@@ -12,7 +12,10 @@ import org.gino.v2exfun.serialize.model.Reply;
 import org.gino.v2exfun.serialize.model.Topic;
 
 import java.lang.reflect.Type;
+import java.net.HttpCookie;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -30,16 +33,53 @@ public class RequestApis {
         return mInstance;
     }
 
-    public Request login(String userName,String pwd,Response.Listener<String> listener, Response.ErrorListener errorListener){
+    public Request login(String userName, String pwd, String once, Map<String,String> cookies, Response.Listener<String> listener, Response.ErrorListener errorListener) {
         final String tUserName = userName;
         final String tPwd = pwd;
-        Request request = new StringRequest(Request.Method.POST, ComConst.HTTP_LOGIN_URL,listener,errorListener){
+        final String tOnce = once;
+        final Map<String,String> tCookies = cookies;
+        Request request = new StringRequest(Request.Method.POST, ComConst.HTTP_LOGIN_URL, listener, errorListener) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
+
+                Map<String, String> params = new IdentityHashMap<String, String>();
+                params.put("next", "/");
                 params.put("u", tUserName);
                 params.put("p", tPwd);
+                params.put("once", tOnce);
+                params.put("next", "/");
                 return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = super.getHeaders();
+                if(headers == null || headers.size() == 0){
+                    headers = new HashMap<String, String>();
+                }
+                StringBuilder builder = new StringBuilder();
+                Iterator iterator = tCookies.entrySet().iterator();
+                while(iterator.hasNext()){
+                    Map.Entry entry = (Map.Entry) iterator.next();
+                    String key = (String) entry.getKey();
+                    String val = (String) entry.getValue();
+                    builder.append(key)
+                            .append("=")
+                            .append(val);
+                    if (iterator.hasNext())
+                        builder.append("; ");
+                }
+//                for (int i = 0; i < tCookies.size(); i++) {
+//                    HttpCookie cookie = tCookies.get(i);
+//                    builder.append(cookie.getName())
+//                            .append("=")
+//                            .append(cookie.getValue());
+//                    if (i < tCookies.size() - 1)
+//                        builder.append("; ");
+//                }
+                headers.put("Cookie",builder.toString());
+                headers.put("Referer",ComConst.HTTP_LOGIN_URL);
+                return headers;
             }
         };
         return request;
@@ -47,26 +87,30 @@ public class RequestApis {
 
     /**
      * 获取最新20主题
+     *
      * @param listener
      * @param errorListener
      * @return
      */
     public Request getLatestTopics(Response.Listener<List<Topic>> listener, Response.ErrorListener errorListener) {
-        Type type = new TypeToken<List<Topic>>(){}.getType();
-        Request request = new GsonArrayRequest<List<Topic>>(ComConst.HTTP_TOPICS_LATEST_URL,type, null, listener, errorListener);
+        Type type = new TypeToken<List<Topic>>() {
+        }.getType();
+        Request request = new GsonArrayRequest<List<Topic>>(ComConst.HTTP_TOPICS_LATEST_URL, type, null, listener, errorListener);
         return request;
     }
 
     /**
      * 获取主题回复列表
+     *
      * @param topicId
      * @param listener
      * @param errorListener
      * @return
      */
-    public Request getRepliesForTopicId(int topicId,Response.Listener<List<Reply>> listener, Response.ErrorListener errorListener){
-        Type type = new TypeToken<List<Reply>>(){}.getType();
-        Request request = new GsonArrayRequest<List<Reply>>(String.format(ComConst.HTTP_REPLIES_SHOW_URL,topicId),type,null,listener,errorListener);
+    public Request getRepliesForTopicId(int topicId, Response.Listener<List<Reply>> listener, Response.ErrorListener errorListener) {
+        Type type = new TypeToken<List<Reply>>() {
+        }.getType();
+        Request request = new GsonArrayRequest<List<Reply>>(String.format(ComConst.HTTP_REPLIES_SHOW_URL, topicId), type, null, listener, errorListener);
         return request;
     }
 

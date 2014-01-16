@@ -1,6 +1,7 @@
 package org.gino.v2exfun.ui.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -23,13 +24,14 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 ;import org.gino.v2exfun.R;
+import org.gino.v2exfun.ui.LoginActivity;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
  * design guidelines</a> for a complete explanation of the behaviors implemented here.
  */
-public class NavigationDrawerFragment extends Fragment {
+public class NavigationDrawerFragment extends Fragment implements View.OnClickListener{
 
     /**
      * Remember the position of the selected item.
@@ -105,6 +107,7 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.title_section3),
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+        (view.findViewById(R.id.fnd_ll_login)).setOnClickListener(this);
         return view;
     }
 
@@ -267,6 +270,17 @@ public class NavigationDrawerFragment extends Fragment {
 
     private ActionBar getActionBar() {
         return ((ActionBarActivity) getActivity()).getSupportActionBar();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()){
+            case R.id.fnd_ll_login:
+                Intent intent = new Intent();
+                intent.setClass(getActivity(), LoginActivity.class);
+                startActivity(intent);
+                break;
+        }
     }
 
     /**

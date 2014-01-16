@@ -10,6 +10,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.widget.Button;
+import android.widget.EditText;
+
+import org.gino.v2exfun.R;
+import org.gino.v2exfun.ui.model.LoginUiModel;
+import org.gino.v2exfun.ui.model.event.LoginUiModelEvent;
 
 public class LoginActivity extends ActionBarActivity {
 
@@ -49,7 +55,15 @@ public class LoginActivity extends ActionBarActivity {
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
+    public static class PlaceholderFragment extends Fragment implements View.OnClickListener{
+
+        private EditText mUserNameEditText;
+        private EditText mPassWordEditText;
+
+        private Button mLoginButton;
+
+        private LoginUiModel mLoginUiModel;
+        private LoginUiModelEvent mEvent;
 
         public PlaceholderFragment() {
         }
@@ -58,7 +72,29 @@ public class LoginActivity extends ActionBarActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_login, container, false);
+            mUserNameEditText = (EditText) rootView.findViewById(R.id.fl_et_username);
+            mPassWordEditText = (EditText) rootView.findViewById(R.id.fl_et_password);
+            mLoginButton = (Button) rootView.findViewById(R.id.fl_btn_login);
+            mLoginButton.setOnClickListener(this);
+
+            mEvent = new LoginUiModelEvent() {
+                @Override
+                public void onLogin(String userName, String passWord) {
+
+                }
+            };
+            mLoginUiModel = new LoginUiModel();
+            mLoginUiModel.regEvent(mEvent);
             return rootView;
+        }
+
+        @Override
+        public void onClick(View v) {
+            switch(v.getId()){
+                case R.id.fl_btn_login:
+                    mLoginUiModel.onLogin(mUserNameEditText.getText().toString(),mPassWordEditText.getText().toString());
+                    break;
+            }
         }
     }
 
