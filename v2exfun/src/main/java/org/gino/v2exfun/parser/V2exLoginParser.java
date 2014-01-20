@@ -16,12 +16,10 @@ import java.util.Map;
 public class V2exLoginParser {
     public static String getLoginOnceString(HashMap<String,String> cookiesMaps) {
         String mOnce = null;
-        Connection.Response res = null;
         try {
-            res = Jsoup.connect(ComConst.HTTP_LOGIN_URL).execute();
+            Connection.Response res = Jsoup.connect(ComConst.HTTP_LOGIN_URL).execute();
             Document doc = res.parse();
             cookiesMaps.putAll(res.cookies());
-//            Map<String, String> cookieMaps = res.cookies();
             Elements links = doc.select("div.cell");
             Elements link = links.first().select("input[name=once]");
             mOnce = link.first().attr("value");
@@ -29,5 +27,22 @@ public class V2exLoginParser {
             e.printStackTrace();
         }
         return mOnce;
+    }
+
+    public static boolean isLoginSucceed(String html,String userName){
+        final String tUserName = userName;
+
+        Document document = Jsoup.parse(html);
+        Elements usernameNodes = document.select("span.bigger");
+        if (usernameNodes != null && usernameNodes.size() > 0){
+            if(usernameNodes.select("a") != null && usernameNodes.select("a").first().text().equals(tUserName)){
+                //成功
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
     }
 }

@@ -1,6 +1,6 @@
 package org.gino.v2exfun.ui.model.event;
 
-import org.gino.v2exfun.serialize.model.Topic;
+import org.gino.v2exfun.data.serialize.model.Topic;
 
 import java.util.List;
 

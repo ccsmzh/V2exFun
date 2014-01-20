@@ -9,9 +9,9 @@ import android.widget.ListView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
-import org.gino.v2exfun.serialize.RequestApis;
-import org.gino.v2exfun.serialize.model.Reply;
-import org.gino.v2exfun.serialize.model.Topic;
+import org.gino.v2exfun.data.serialize.http.RequestApis;
+import org.gino.v2exfun.data.serialize.model.Reply;
+import org.gino.v2exfun.data.serialize.model.Topic;
 import org.gino.v2exfun.ui.adapter.TopicDetailAdapter;
 
 import java.util.ArrayList;

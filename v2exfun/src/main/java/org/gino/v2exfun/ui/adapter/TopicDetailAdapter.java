@@ -10,9 +10,9 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 
-import org.gino.v2exfun.serialize.RequestManager;
-import org.gino.v2exfun.serialize.model.Reply;
-import org.gino.v2exfun.serialize.model.Topic;
+import org.gino.v2exfun.data.serialize.http.RequestManager;
+import org.gino.v2exfun.data.serialize.model.Reply;
+import org.gino.v2exfun.data.serialize.model.Topic;
 
 import java.util.List;
 

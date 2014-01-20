@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 
 import com.android.volley.Request;
 
-import org.gino.v2exfun.serialize.RequestManager;
+import org.gino.v2exfun.data.serialize.http.RequestManager;
 
 /**
  * Created by zh.GiNo. on 13-11-23.

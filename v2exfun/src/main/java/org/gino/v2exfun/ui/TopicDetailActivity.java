@@ -6,7 +6,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 
-import org.gino.v2exfun.serialize.model.Topic;
+import org.gino.v2exfun.data.serialize.model.Topic;
 import org.gino.v2exfun.ui.fragment.TopicDetailFragment;
 
 /**

@@ -1,7 +1,6 @@
 package org.gino.v2exfun.ui.fragment;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,16 +8,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-
-import org.gino.v2exfun.serialize.RequestApis;
-import org.gino.v2exfun.serialize.model.Topic;
+import org.gino.v2exfun.data.serialize.model.Topic;
 import org.gino.v2exfun.ui.TopicDetailActivity;
 import org.gino.v2exfun.ui.adapter.LatestListAdapter;
 import org.gino.v2exfun.ui.model.LatestListUiModel;
 import org.gino.v2exfun.ui.model.event.LatestListUiModelEvent;
-import org.gino.v2exfun.utils.AsyncUtils;
 
 import java.util.List;
 

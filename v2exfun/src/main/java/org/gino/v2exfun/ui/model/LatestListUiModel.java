@@ -1,16 +1,9 @@
 package org.gino.v2exfun.ui.model;
 
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.view.View;
-import android.widget.AdapterView;
-
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 
 import org.gino.v2exfun.parser.V2exTopicsParser;
-import org.gino.v2exfun.serialize.RequestApis;
-import org.gino.v2exfun.serialize.model.Topic;
+import org.gino.v2exfun.data.serialize.model.Topic;
 import org.gino.v2exfun.ui.model.event.LatestListUiModelEvent;
 import org.gino.v2exfun.utils.AsyncUtils;
 

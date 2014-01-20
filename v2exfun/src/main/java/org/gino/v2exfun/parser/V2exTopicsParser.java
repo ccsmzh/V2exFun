@@ -1,13 +1,11 @@
 package org.gino.v2exfun.parser;
 
-import android.util.Log;
-
 import com.google.gson.internal.LazilyParsedNumber;
 
 import org.gino.v2exfun.constant.ComConst;
-import org.gino.v2exfun.serialize.model.Member;
-import org.gino.v2exfun.serialize.model.Node;
-import org.gino.v2exfun.serialize.model.Topic;
+import org.gino.v2exfun.data.serialize.model.Member;
+import org.gino.v2exfun.data.serialize.model.Node;
+import org.gino.v2exfun.data.serialize.model.Topic;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -16,8 +14,6 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by zhuohong on 14-1-6.

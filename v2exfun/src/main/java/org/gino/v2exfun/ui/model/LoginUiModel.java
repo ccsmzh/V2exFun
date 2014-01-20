@@ -11,22 +11,18 @@ import com.android.volley.VolleyError;
 import org.gino.v2exfun.MyApplication;
 import org.gino.v2exfun.constant.ComConst;
 import org.gino.v2exfun.parser.V2exLoginParser;
-import org.gino.v2exfun.serialize.RequestApis;
+import org.gino.v2exfun.data.serialize.http.RequestApis;
 import org.gino.v2exfun.ui.model.event.LoginUiModelEvent;
 import org.gino.v2exfun.utils.AsyncUtils;
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.HttpCookie;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by hongzhuo on 14-1-16.
@@ -47,13 +43,17 @@ public class LoginUiModel extends BaseUiModel<LoginUiModelEvent> {
                 Request request = RequestApis.getInstance().login(tUserName, tPassWord, mOnce,cookieMaps, new Response.Listener<String>() {
                             @Override
                             public void onResponse(String s) {
-                                List<HttpCookie> cookies = ((CookieManager) CookieHandler.getDefault()).getCookieStore().getCookies();
-                                CookieSyncManager.createInstance(MyApplication.getContext());
-                                for (HttpCookie cookie : cookies) {
-                                    Log.e("TAG", "name=>" + cookie.getName() + "  value=>" + cookie.getValue());
-                                    android.webkit.CookieManager cookieManager = android.webkit.CookieManager.getInstance();
-                                    cookieManager.setCookie(ComConst.HTTP_BASE_POST_URL, cookie.getName() + "=" + cookie.getValue());
-                                    CookieSyncManager.getInstance().sync();
+                                if(V2exLoginParser.isLoginSucceed(s,tUserName)){
+                                    List<HttpCookie> cookies = ((CookieManager) CookieHandler.getDefault()).getCookieStore().getCookies();
+                                    CookieSyncManager.createInstance(MyApplication.getContext());
+                                    for (HttpCookie cookie : cookies) {
+                                        Log.e("TAG", "name=>" + cookie.getName() + "  value=>" + cookie.getValue());
+                                        android.webkit.CookieManager cookieManager = android.webkit.CookieManager.getInstance();
+                                        cookieManager.setCookie(ComConst.HTTP_BASE_POST_URL, cookie.getName() + "=" + cookie.getValue());
+                                        CookieSyncManager.getInstance().sync();
+                                    }
+                                }else{
+
                                 }
                             }
                         }, new Response.ErrorListener() {

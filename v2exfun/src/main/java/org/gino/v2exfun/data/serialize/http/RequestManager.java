@@ -1,4 +1,4 @@
-package org.gino.v2exfun.serialize;
+package org.gino.v2exfun.data.serialize.http;
 
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;
@@ -10,7 +10,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
-import org.apache.http.params.HttpParams;
 import org.gino.v2exfun.MyApplication;
 
 import java.net.CookieHandler;

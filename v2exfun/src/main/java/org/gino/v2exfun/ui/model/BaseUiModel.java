@@ -2,7 +2,7 @@ package org.gino.v2exfun.ui.model;
 
 import com.android.volley.Request;
 
-import org.gino.v2exfun.serialize.RequestManager;
+import org.gino.v2exfun.data.serialize.http.RequestManager;
 import org.gino.v2exfun.ui.model.event.BaseUiModelEvent;
 
 import java.util.Iterator;

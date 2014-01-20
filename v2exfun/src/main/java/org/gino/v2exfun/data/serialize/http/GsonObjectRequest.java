@@ -1,4 +1,4 @@
-package org.gino.v2exfun.serialize;
+package org.gino.v2exfun.data.serialize.http;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;

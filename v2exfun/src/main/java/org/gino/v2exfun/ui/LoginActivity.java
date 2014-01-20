@@ -13,7 +13,12 @@ import android.os.Build;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+
 import org.gino.v2exfun.R;
+import org.gino.v2exfun.data.serialize.database.DatabaseHelper;
+import org.gino.v2exfun.data.serialize.model.Member;
+import org.gino.v2exfun.data.serialize.model.V2exSession;
 import org.gino.v2exfun.ui.model.LoginUiModel;
 import org.gino.v2exfun.ui.model.event.LoginUiModelEvent;
 
@@ -57,6 +62,8 @@ public class LoginActivity extends ActionBarActivity {
      */
     public static class PlaceholderFragment extends Fragment implements View.OnClickListener{
 
+//        private DatabaseHelper
+
         private EditText mUserNameEditText;
         private EditText mPassWordEditText;
 
@@ -65,6 +72,7 @@ public class LoginActivity extends ActionBarActivity {
         private LoginUiModel mLoginUiModel;
         private LoginUiModelEvent mEvent;
 
+        private DatabaseHelper databaseHelper = null;
         public PlaceholderFragment() {
         }
 
@@ -80,6 +88,16 @@ public class LoginActivity extends ActionBarActivity {
             mEvent = new LoginUiModelEvent() {
                 @Override
                 public void onLogin(String userName, String passWord) {
+//                    getHelper().getV2exSessionDataDao().cre
+                }
+
+                @Override
+                public void onLoginSucceed(V2exSession session, Member member) {
+
+                }
+
+                @Override
+                public void onLoginFaild() {
 
                 }
             };
@@ -95,6 +113,13 @@ public class LoginActivity extends ActionBarActivity {
                     mLoginUiModel.onLogin(mUserNameEditText.getText().toString(),mPassWordEditText.getText().toString());
                     break;
             }
+        }
+
+        private DatabaseHelper getHelper() {
+            if (databaseHelper == null) {
+                databaseHelper = OpenHelperManager.getHelper(getActivity(), DatabaseHelper.class);
+            }
+            return databaseHelper;
         }
     }
 

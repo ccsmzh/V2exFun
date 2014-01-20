@@ -1,4 +1,4 @@
-package org.gino.v2exfun.serialize;
+package org.gino.v2exfun.data.serialize.http;
 
 /**
  * Created by kefeng on 13-11-23.

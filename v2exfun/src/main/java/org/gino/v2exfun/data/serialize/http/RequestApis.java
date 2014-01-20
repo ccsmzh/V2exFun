@@ -1,4 +1,4 @@
-package org.gino.v2exfun.serialize;
+package org.gino.v2exfun.data.serialize.http;
 
 
 import com.android.volley.AuthFailureError;
@@ -8,11 +8,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.reflect.TypeToken;
 
 import org.gino.v2exfun.constant.ComConst;
-import org.gino.v2exfun.serialize.model.Reply;
-import org.gino.v2exfun.serialize.model.Topic;
+import org.gino.v2exfun.data.serialize.model.Reply;
+import org.gino.v2exfun.data.serialize.model.Topic;
 
 import java.lang.reflect.Type;
-import java.net.HttpCookie;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Iterator;

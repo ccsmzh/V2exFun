@@ -1,5 +1,5 @@
 
-package org.gino.v2exfun.serialize.model;
+package org.gino.v2exfun.data.serialize.model;
 
 import android.text.TextUtils;
 
