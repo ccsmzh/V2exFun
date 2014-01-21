@@ -1,5 +1,7 @@
 package org.gino.v2exfun.parser;
 
+import android.util.Log;
+
 import org.gino.v2exfun.constant.ComConst;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -43,6 +45,23 @@ public class V2exLoginParser {
             }
         }else{
             return false;
+        }
+    }
+
+    public void doLogin(Map<String,String> cookieMaps,String userName, String passWord, String once){
+        final String tUserName = userName;
+        final String tPassWord = passWord;
+        final String tOnce = once;
+        try {
+            Connection connection = Jsoup.connect(ComConst.HTTP_LOGIN_URL).cookies(cookieMaps).referrer(ComConst.HTTP_LOGIN_URL).method(Connection.Method.POST);
+            connection.data("next","/");
+            connection.data("u",tUserName);
+            connection.data("once",tOnce);
+            connection.data("p",tPassWord);
+            connection.data("next","/");
+            Connection.Response response = connection.execute();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

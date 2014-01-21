@@ -42,16 +42,30 @@ public class RequestApis {
         final String tOnce = once;
         final Map<String,String> tCookies = cookies;
         Request request = new StringRequest(Request.Method.POST, ComConst.HTTP_LOGIN_URL, listener, errorListener) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+//            @Override
+//            protected Map<String, String> getParams() throws AuthFailureError {
+//
+//                Map<String, String> params = new IdentityHashMap<String, String>();
+//                params.put("next", "/");
+//                params.put("u", tUserName);
+//                params.put("once", tOnce);
+//                params.put("p", tPwd);
+//                params.put("next", "/");
+//                return params;
+//            }
 
-                Map<String, String> params = new IdentityHashMap<String, String>();
-                params.put("next", "/");
-                params.put("u", tUserName);
-                params.put("once", tOnce);
-                params.put("p", tPwd);
-                params.put("next", "/");
-                return params;
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                StringBuilder sb = new StringBuilder();
+                sb.append("next=/&u=");
+                sb.append(tUserName);
+                sb.append("&once=");
+                sb.append(tOnce);
+                sb.append("&p=");
+                sb.append(tPwd);
+                sb.append("&next=/");
+                return sb.toString().getBytes();
+//                return super.getBody();
             }
 
             @Override
@@ -73,9 +87,11 @@ public class RequestApis {
                         builder.append("; ");
                 }
                 headers.put(HTTP.USER_AGENT,WebSettings.getDefaultUserAgent(MyApplication.getContext()));
-                headers.put("Accept", "*/*");
-                headers.put("Connection", "keep-alive");
+//                headers.put("Accept", "*/*");
+//                headers.put("Connection", "keep-alive");
                 headers.put("Cookie",builder.toString());
+                headers.put("Host","v2ex.com");
+                headers.put("Origin","http://v2ex.com");
                 headers.put("Referer",ComConst.HTTP_LOGIN_URL);
                 return headers;
             }

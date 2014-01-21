@@ -16,10 +16,12 @@ import org.gino.v2exfun.parser.V2exLoginParser;
 import org.gino.v2exfun.data.serialize.http.RequestApis;
 import org.gino.v2exfun.ui.model.event.LoginUiModelEvent;
 import org.gino.v2exfun.utils.AsyncUtils;
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+import java.io.IOException;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.HttpCookie;
@@ -42,40 +44,6 @@ public class LoginUiModel extends BaseUiModel<LoginUiModelEvent> {
                 HashMap<String,String> cookieMaps = new HashMap<String, String>();
                 final String mOnce = V2exLoginParser.getLoginOnceString(cookieMaps);
 
-                Request request = RequestApis.getInstance().login(tUserName, tPassWord, mOnce,cookieMaps, new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String s) {
-                                if(V2exLoginParser.isLoginSucceed(s,tUserName)){
-                                    List<HttpCookie> cookies = ((CookieManager) CookieHandler.getDefault()).getCookieStore().getCookies();
-                                    CookieSyncManager.createInstance(MyApplication.getContext());
-                                    for (HttpCookie cookie : cookies) {
-                                        Log.e("TAG", "name=>" + cookie.getName() + "  value=>" + cookie.getValue());
-                                        if(cookie.getName().equals("pb3_session")){
-                                            for (LoginUiModelEvent event : LoginUiModel.this) {
-                                                V2exSession v2exSession = new V2exSession(tUserName,cookie.getValue());
-                                                Member member = new Member();
-                                                member.setUsername(tUserName);
-                                                event.onLoginSucceed(v2exSession, member);
-                                            }
-                                        }
-                                        android.webkit.CookieManager cookieManager = android.webkit.CookieManager.getInstance();
-                                        cookieManager.setCookie(ComConst.HTTP_BASE_POST_URL, cookie.getName() + "=" + cookie.getValue());
-                                        CookieSyncManager.getInstance().sync();
-                                    }
-                                }else{
-                                    for (LoginUiModelEvent event : LoginUiModel.this) {
-                                        event.onLoginFaild();
-                                    }
-                                }
-                            }
-                        }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError volleyError) {
-
-                            }
-                        }
-                );
-                executeRequest(request);
 
                 return null;
             }
