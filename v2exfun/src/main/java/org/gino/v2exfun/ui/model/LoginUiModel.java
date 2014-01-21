@@ -10,6 +10,8 @@ import com.android.volley.VolleyError;
 
 import org.gino.v2exfun.MyApplication;
 import org.gino.v2exfun.constant.ComConst;
+import org.gino.v2exfun.data.serialize.model.Member;
+import org.gino.v2exfun.data.serialize.model.V2exSession;
 import org.gino.v2exfun.parser.V2exLoginParser;
 import org.gino.v2exfun.data.serialize.http.RequestApis;
 import org.gino.v2exfun.ui.model.event.LoginUiModelEvent;
@@ -48,12 +50,22 @@ public class LoginUiModel extends BaseUiModel<LoginUiModelEvent> {
                                     CookieSyncManager.createInstance(MyApplication.getContext());
                                     for (HttpCookie cookie : cookies) {
                                         Log.e("TAG", "name=>" + cookie.getName() + "  value=>" + cookie.getValue());
+                                        if(cookie.getName().equals("pb3_session")){
+                                            for (LoginUiModelEvent event : LoginUiModel.this) {
+                                                V2exSession v2exSession = new V2exSession(tUserName,cookie.getValue());
+                                                Member member = new Member();
+                                                member.setUsername(tUserName);
+                                                event.onLoginSucceed(v2exSession, member);
+                                            }
+                                        }
                                         android.webkit.CookieManager cookieManager = android.webkit.CookieManager.getInstance();
                                         cookieManager.setCookie(ComConst.HTTP_BASE_POST_URL, cookie.getName() + "=" + cookie.getValue());
                                         CookieSyncManager.getInstance().sync();
                                     }
                                 }else{
-
+                                    for (LoginUiModelEvent event : LoginUiModel.this) {
+                                        event.onLoginFaild();
+                                    }
                                 }
                             }
                         }, new Response.ErrorListener() {
@@ -64,9 +76,7 @@ public class LoginUiModel extends BaseUiModel<LoginUiModelEvent> {
                         }
                 );
                 executeRequest(request);
-                for (LoginUiModelEvent event : LoginUiModel.this) {
-                    event.onLogin(tUserName, tPassWord);
-                }
+
                 return null;
             }
         });

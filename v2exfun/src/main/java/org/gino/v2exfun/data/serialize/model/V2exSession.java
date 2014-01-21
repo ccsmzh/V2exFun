@@ -14,6 +14,11 @@ public class V2exSession {
     @DatabaseField
     public String pb3Session;
 
+    public V2exSession(String userName, String pb3Session){
+        this.userName = userName;
+        this.pb3Session = pb3Session;
+    }
+
     public String getUserName() {
         return userName;
     }

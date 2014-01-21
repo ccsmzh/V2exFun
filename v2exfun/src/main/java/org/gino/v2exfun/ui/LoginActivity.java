@@ -4,6 +4,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -93,12 +94,12 @@ public class LoginActivity extends ActionBarActivity {
 
                 @Override
                 public void onLoginSucceed(V2exSession session, Member member) {
-
+                    Log.e("TAG","succeed");
                 }
 
                 @Override
                 public void onLoginFaild() {
-
+                    Log.e("TAG","faild");
                 }
             };
             mLoginUiModel = new LoginUiModel();

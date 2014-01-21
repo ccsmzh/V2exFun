@@ -1,12 +1,16 @@
 package org.gino.v2exfun.data.serialize.http;
 
 
+import android.webkit.WebSettings;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.reflect.TypeToken;
 
+import org.apache.http.protocol.HTTP;
+import org.gino.v2exfun.MyApplication;
 import org.gino.v2exfun.constant.ComConst;
 import org.gino.v2exfun.data.serialize.model.Reply;
 import org.gino.v2exfun.data.serialize.model.Topic;
@@ -44,8 +48,8 @@ public class RequestApis {
                 Map<String, String> params = new IdentityHashMap<String, String>();
                 params.put("next", "/");
                 params.put("u", tUserName);
-                params.put("p", tPwd);
                 params.put("once", tOnce);
+                params.put("p", tPwd);
                 params.put("next", "/");
                 return params;
             }
@@ -68,14 +72,9 @@ public class RequestApis {
                     if (iterator.hasNext())
                         builder.append("; ");
                 }
-//                for (int i = 0; i < tCookies.size(); i++) {
-//                    HttpCookie cookie = tCookies.get(i);
-//                    builder.append(cookie.getName())
-//                            .append("=")
-//                            .append(cookie.getValue());
-//                    if (i < tCookies.size() - 1)
-//                        builder.append("; ");
-//                }
+                headers.put(HTTP.USER_AGENT,WebSettings.getDefaultUserAgent(MyApplication.getContext()));
+                headers.put("Accept", "*/*");
+                headers.put("Connection", "keep-alive");
                 headers.put("Cookie",builder.toString());
                 headers.put("Referer",ComConst.HTTP_LOGIN_URL);
                 return headers;
