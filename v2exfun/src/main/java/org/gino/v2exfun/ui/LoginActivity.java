@@ -35,6 +35,11 @@ public class LoginActivity extends ActionBarActivity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
+
+        ActionBar actionBar = getSupportActionBar();
+//        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setTitle("登录");
+//        actionBar.setIcon(R.drawable.ab_icon_v2exfun);
     }
 
 
