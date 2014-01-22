@@ -9,43 +9,63 @@
     tools:context="org.gino.v2exfun.ui.LoginActivity$PlaceholderFragment">
 
     <ImageView
+        android:layout_above="@+id/fl_ll_inputlayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:id="@+id/fl_iv_logo"
-        android:src="@drawable/icon_logo_big"/>
+        android:src="@drawable/icon_logo_big" />
 
-    <RelativeLayout
-        android:layout_below="@id/fl_iv_logo"
-        android:id="@+id/fl_rl_username"
+    <LinearLayout
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:id="@+id/fl_ll_inputlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/fl_et_username"
+        <RelativeLayout
+
+            android:id="@+id/fl_rl_username"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="USERNAME" />
-    </RelativeLayout>
+            android:layout_height="wrap_content">
 
-    <RelativeLayout
-        android:layout_below="@id/fl_rl_username"
-        android:id="@+id/fl_rl_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/fl_et_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="USERNAME" />
+        </RelativeLayout>
 
-        <EditText
-            android:id="@+id/fl_et_password"
+        <RelativeLayout
+            android:layout_marginTop="12dip"
+            android:layout_below="@id/fl_rl_username"
+            android:id="@+id/fl_rl_password"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="PASSWORD" />
-    </RelativeLayout>
+            android:layout_height="wrap_content">
 
-    <Button
-        android:text="LOGIN"
-        android:layout_below="@id/fl_rl_password"
-        android:id="@+id/fl_btn_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/fl_et_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="PASSWORD" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/fl_btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="40dip"
+            android:text="LOGIN" />
+
+
+    </LinearLayout>
+
+
+    <org.gino.v2exfun.ui.view.ResizeTextView
+        android:id="@+id/fl_rtv_forgetpwd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="忘记密码" />
 
 </RelativeLayout>

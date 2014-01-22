@@ -10,9 +10,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 
@@ -22,6 +24,7 @@ import org.gino.v2exfun.data.serialize.model.Member;
 import org.gino.v2exfun.data.serialize.model.V2exSession;
 import org.gino.v2exfun.ui.model.LoginUiModel;
 import org.gino.v2exfun.ui.model.event.LoginUiModelEvent;
+import org.gino.v2exfun.ui.view.ResizeTextView;
 
 public class LoginActivity extends ActionBarActivity {
 
@@ -75,6 +78,12 @@ public class LoginActivity extends ActionBarActivity {
 
         private Button mLoginButton;
 
+        private ResizeTextView mForgetPwdTextView;
+
+        private LinearLayout mInputLinearLayout;
+
+        private ImageView mLogoImageView;
+
         private LoginUiModel mLoginUiModel;
         private LoginUiModelEvent mEvent;
 
@@ -88,8 +97,41 @@ public class LoginActivity extends ActionBarActivity {
             View rootView = inflater.inflate(R.layout.fragment_login, container, false);
             mUserNameEditText = (EditText) rootView.findViewById(R.id.fl_et_username);
             mPassWordEditText = (EditText) rootView.findViewById(R.id.fl_et_password);
+
             mLoginButton = (Button) rootView.findViewById(R.id.fl_btn_login);
             mLoginButton.setOnClickListener(this);
+
+            mInputLinearLayout = (LinearLayout) rootView.findViewById(R.id.fl_ll_inputlayout);
+            mLogoImageView = (ImageView) rootView.findViewById(R.id.fl_iv_logo);
+
+            mForgetPwdTextView = (ResizeTextView) rootView.findViewById(R.id.fl_rtv_forgetpwd);
+            mForgetPwdTextView.setOnResizeListener(new ResizeTextView.OnResizeListener() {
+                @Override
+                public void onResize(boolean changed, int left, int top, int right, int bottom) {
+                    int tTotleHeight = mInputLinearLayout.getMeasuredHeight() + mLogoImageView.getMeasuredHeight();
+                    if((bottom - mForgetPwdTextView.getMeasuredHeight()) <= tTotleHeight){
+//                        mLogoImageView.scrollTo(0,50);
+                        mLogoImageView.setTranslationY(-100);
+//                        mInputLinearLayout.setTranslationY(-150);
+                        mInputLinearLayout.offsetTopAndBottom(-150);
+//                        mLoginButton.setTranslationY(-100);
+//                        mInputLinearLayout.scrollTo(0,50);
+//                        mLoginButton.scrollTo(0,50);
+                    }else{
+                        mLogoImageView.setTranslationY(0);
+                        mInputLinearLayout.setTranslationY(0);
+//                        mLoginButton.setTranslationY(0);
+//                        mLogoImageView.scrollTo(0,0);
+//                        mInputLinearLayout.scrollTo(0,0);
+//                        mLoginButton.scrollTo(0,0);
+                    }
+
+                    Log.e("TAG","height=>" + tTotleHeight);
+                    Log.e("TAG","bottom=>" + bottom);
+                    Log.e("TAG","top=>" + top);
+
+                }
+            });
 
             mEvent = new LoginUiModelEvent() {
                 @Override

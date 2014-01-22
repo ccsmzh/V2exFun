@@ -31,6 +31,7 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name="org.gino.v2exfun.ui.LoginActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:label="@string/title_activity_login" >
         </activity>
     </application>
