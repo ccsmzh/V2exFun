@@ -48,7 +48,6 @@ public class LoginActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.login, menu);
         return true;
@@ -69,47 +68,39 @@ public class LoginActivity extends ActionBarActivity {
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment implements View.OnClickListener{
-
-//        private DatabaseHelper
-
+    public static class PlaceholderFragment extends Fragment implements View.OnClickListener {
+        private Button mLoginButton;
         private EditText mUserNameEditText;
         private EditText mPassWordEditText;
-
-        private Button mLoginButton;
-
-        private ResizeTextView mForgetPwdTextView;
-
-        private LinearLayout mInputLinearLayout;
-
         private ImageView mLogoImageView;
+        private LinearLayout mInputLinearLayout;
+        private ResizeTextView mForgetPwdTextView;
 
         private LoginUiModel mLoginUiModel;
         private LoginUiModelEvent mEvent;
-
         private DatabaseHelper databaseHelper = null;
+
         public PlaceholderFragment() {
         }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
+                                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_login, container, false);
             mUserNameEditText = (EditText) rootView.findViewById(R.id.fl_et_username);
             mPassWordEditText = (EditText) rootView.findViewById(R.id.fl_et_password);
+            mInputLinearLayout = (LinearLayout) rootView.findViewById(R.id.fl_ll_inputlayout);
+            mLogoImageView = (ImageView) rootView.findViewById(R.id.fl_iv_logo);
 
             mLoginButton = (Button) rootView.findViewById(R.id.fl_btn_login);
             mLoginButton.setOnClickListener(this);
-
-            mInputLinearLayout = (LinearLayout) rootView.findViewById(R.id.fl_ll_inputlayout);
-            mLogoImageView = (ImageView) rootView.findViewById(R.id.fl_iv_logo);
 
             mForgetPwdTextView = (ResizeTextView) rootView.findViewById(R.id.fl_rtv_forgetpwd);
             mForgetPwdTextView.setOnResizeListener(new ResizeTextView.OnResizeListener() {
                 @Override
                 public void onResize(boolean changed, int left, int top, int right, int bottom) {
                     int tTotleHeight = mInputLinearLayout.getMeasuredHeight() + mLogoImageView.getMeasuredHeight();
-                    if((bottom - mForgetPwdTextView.getMeasuredHeight()) <= tTotleHeight){
+                    if ((bottom - mForgetPwdTextView.getMeasuredHeight()) <= tTotleHeight) {
 //                        mLogoImageView.scrollTo(0,50);
                         mLogoImageView.setTranslationY(-100);
 //                        mInputLinearLayout.setTranslationY(-150);
@@ -117,7 +108,7 @@ public class LoginActivity extends ActionBarActivity {
 //                        mLoginButton.setTranslationY(-100);
 //                        mInputLinearLayout.scrollTo(0,50);
 //                        mLoginButton.scrollTo(0,50);
-                    }else{
+                    } else {
                         mLogoImageView.setTranslationY(0);
                         mInputLinearLayout.setTranslationY(0);
 //                        mLoginButton.setTranslationY(0);
@@ -126,9 +117,9 @@ public class LoginActivity extends ActionBarActivity {
 //                        mLoginButton.scrollTo(0,0);
                     }
 
-                    Log.e("TAG","height=>" + tTotleHeight);
-                    Log.e("TAG","bottom=>" + bottom);
-                    Log.e("TAG","top=>" + top);
+                    Log.e("TAG", "height=>" + tTotleHeight);
+                    Log.e("TAG", "bottom=>" + bottom);
+                    Log.e("TAG", "top=>" + top);
 
                 }
             });
@@ -141,24 +132,25 @@ public class LoginActivity extends ActionBarActivity {
 
                 @Override
                 public void onLoginSucceed(V2exSession session, Member member) {
-                    Log.e("TAG","succeed");
+                    Log.e("TAG", "succeed");
                 }
 
                 @Override
                 public void onLoginFaild() {
-                    Log.e("TAG","faild");
+                    Log.e("TAG", "faild");
                 }
             };
             mLoginUiModel = new LoginUiModel();
             mLoginUiModel.regEvent(mEvent);
+
             return rootView;
         }
 
         @Override
         public void onClick(View v) {
-            switch(v.getId()){
+            switch (v.getId()) {
                 case R.id.fl_btn_login:
-                    mLoginUiModel.onLogin(mUserNameEditText.getText().toString(),mPassWordEditText.getText().toString());
+                    mLoginUiModel.onLogin(mUserNameEditText.getText().toString(), mPassWordEditText.getText().toString());
                     break;
             }
         }
