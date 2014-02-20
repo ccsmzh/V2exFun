@@ -3,6 +3,7 @@ package org.gino.v2exfun.ui;
 import android.animation.LayoutTransition;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -34,9 +35,10 @@ import org.gino.v2exfun.ui.model.LoginUiModel;
 import org.gino.v2exfun.ui.model.event.LoginUiModelEvent;
 import org.gino.v2exfun.ui.view.ResizeRelativeLayout;
 import org.gino.v2exfun.ui.view.ResizeTextView;
+import org.gino.v2exfun.utils.CommonUtils;
 import org.gino.v2exfun.utils.VLog;
 
-public class LoginActivity extends ActionBarActivity {
+public class LoginActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +51,9 @@ public class LoginActivity extends ActionBarActivity {
                     .commit();
         }
 
-        ActionBar actionBar = getSupportActionBar();
+//        ActionBar actionBar = getSupportActionBar();
 //        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setTitle("登录");
+//        actionBar.setTitle("登录");
 //        actionBar.setIcon(R.drawable.ab_icon_v2exfun);
     }
 
@@ -88,8 +90,6 @@ public class LoginActivity extends ActionBarActivity {
 
         private Button mLoginButton;
 
-        private ResizeTextView mForgetPwdTextView;
-
         private LinearLayout mInputLinearLayout;
 
         private ImageView mLogoImageView;
@@ -98,11 +98,13 @@ public class LoginActivity extends ActionBarActivity {
         private LoginUiModelEvent mEvent;
 
         private DatabaseHelper databaseHelper = null;
+
         private ValueAnimator upAnimator = null;
         private ValueAnimator downAnimator = null;
         private ValueAnimator logoUpAnimator = null;
         private ValueAnimator logoDownAnimator = null;
         private float defaultY = -1;
+
         public PlaceholderFragment() {
         }
 
@@ -112,56 +114,11 @@ public class LoginActivity extends ActionBarActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_login, container, false);
 
+            mUserNameEditText = (EditText) rootView.findViewById(R.id.fl_et_username);
+            mPassWordEditText = (EditText) rootView.findViewById(R.id.fl_et_password);
+
             mInputLinearLayout = (LinearLayout) rootView.findViewById(R.id.fl_ll_inputlayout);
             mLogoImageView = (ImageView) rootView.findViewById(R.id.fl_iv_logo);
-
-            mInputLinearLayout.getViewTreeObserver().addOnGlobalFocusChangeListener(new ViewTreeObserver.OnGlobalFocusChangeListener() {
-                @Override
-                public void onGlobalFocusChanged(View oldFocus, View newFocus) {
-                    defaultY = mInputLinearLayout.getY();
-
-                    upAnimator = ValueAnimator.ofFloat(mInputLinearLayout.getY(),mInputLinearLayout.getY() - 150 );
-                    upAnimator.setDuration(200);
-                    upAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                        @Override
-                        public void onAnimationUpdate(ValueAnimator animation) {
-                            mInputLinearLayout.setY((Float) animation.getAnimatedValue());
-                        }
-                    });
-                    upAnimator.setInterpolator(new DecelerateInterpolator());
-
-                    logoUpAnimator = ValueAnimator.ofFloat(mLogoImageView.getY(),mLogoImageView.getY() - 150 );
-                    logoUpAnimator.setDuration(200);
-                    logoUpAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                        @Override
-                        public void onAnimationUpdate(ValueAnimator animation) {
-                            mLogoImageView.setY((Float) animation.getAnimatedValue());
-                        }
-                    });
-                    logoUpAnimator.setInterpolator(new DecelerateInterpolator());
-
-                    downAnimator = ValueAnimator.ofFloat(mInputLinearLayout.getY() - 150,mInputLinearLayout.getY());
-                    downAnimator.setDuration(200);
-                    downAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                        @Override
-                        public void onAnimationUpdate(ValueAnimator animation) {
-                            mInputLinearLayout.setY((Float) animation.getAnimatedValue());
-                        }
-                    });
-
-                    logoDownAnimator = ValueAnimator.ofFloat(mLogoImageView.getY() - 150,mLogoImageView.getY());
-                    logoDownAnimator.setDuration(200);
-                    logoDownAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                        @Override
-                        public void onAnimationUpdate(ValueAnimator animation) {
-                            mLogoImageView.setY((Float) animation.getAnimatedValue());
-                        }
-                    });
-
-                    mInputLinearLayout.getViewTreeObserver().removeOnGlobalFocusChangeListener(this);
-                }
-            });
-
 
             ((ResizeRelativeLayout) rootView).setOnResizeListener(new ResizeRelativeLayout.OnResizeListener() {
                 @Override
@@ -171,19 +128,16 @@ public class LoginActivity extends ActionBarActivity {
 
                 @Override
                 public boolean onLayout(boolean changed, int l, int t, int r, int b) {
-                    android.view.WindowManager windowsManager =
-                            (android.view.WindowManager) MyApplication.getContext().getSystemService(Context.WINDOW_SERVICE);
-                    android.view.Display display = windowsManager.getDefaultDisplay();
-                    int screenHeightIntPx = display.getHeight();//
+                    int screenHeightIntPx = CommonUtils.getDisplayHeight(PlaceholderFragment.this.getActivity());
                     if (b < screenHeightIntPx * 0.8) {
-                        VLog.e("弹出");
+                        if (downAnimator == null) {
+                            initAnimator(b);
+                        }
                         upAnimator.start();
                         logoUpAnimator.start();
                         return false;
                     } else {
-                        VLog.e("收回");
-                        if(mInputLinearLayout.getY() != defaultY && downAnimator != null){
-                            VLog.e("收回动画");
+                        if (mInputLinearLayout.getY() != defaultY && downAnimator != null) {
                             downAnimator.start();
                             logoDownAnimator.start();
                         }
@@ -191,48 +145,9 @@ public class LoginActivity extends ActionBarActivity {
                     }
                 }
             });
-            mUserNameEditText = (EditText) rootView.findViewById(R.id.fl_et_username);
-            mPassWordEditText = (EditText) rootView.findViewById(R.id.fl_et_password);
 
             mLoginButton = (Button) rootView.findViewById(R.id.fl_btn_login);
             mLoginButton.setOnClickListener(this);
-
-
-
-            mForgetPwdTextView = (ResizeTextView) rootView.findViewById(R.id.fl_rtv_forgetpwd);
-//            mForgetPwdTextView.setOnResizeListener(new ResizeTextView.OnResizeListener() {
-//                @Override
-//                public void onResize(boolean changed, int left, int top, int right, int bottom) {
-//                    int tTotleHeight = mInputLinearLayout.getMeasuredHeight() + mLogoImageView.getMeasuredHeight();
-//                    if((bottom - mForgetPwdTextView.getMeasuredHeight()) <= tTotleHeight){
-////                        mLogoImageView.scrollTo(0,50);
-////                        mLogoImageView.setTranslationY(-100);
-//                        mLogoImageView.setY(mLogoImageView.getY()-100);
-////                        mInputLinearLayout.setTranslationY(-150);
-////                        mInputLinearLayout.offsetTopAndBottom(-150);
-//                        mInputLinearLayout.setY(mInputLinearLayout.getY()-100);
-////                        mLoginButton.setTranslationY(-100);
-////                        mInputLinearLayout.scrollTo(0,50);
-////                        mLoginButton.scrollTo(0,50);
-//                    }else{
-////                        mLogoImageView.setTranslationY(0);
-////                        mInputLinearLayout.setTranslationY(0);
-////                        mLogoImageView.setY(0);
-//                        mLogoImageView.requestLayout();
-//                        mInputLinearLayout.requestLayout();
-////                        mInputLinearLayout.setY(0);
-////                        mLoginButton.setTranslationY(0);
-////                        mLogoImageView.scrollTo(0,0);
-////                        mInputLinearLayout.scrollTo(0,0);
-////                        mLoginButton.scrollTo(0,0);
-//                    }
-//
-//                    Log.e("TAG","height=>" + tTotleHeight);
-//                    Log.e("TAG","bottom=>" + bottom);
-//                    Log.e("TAG","top=>" + top);
-//
-//                }
-//            });
 
             mEvent = new LoginUiModelEvent() {
                 @Override
@@ -269,6 +184,54 @@ public class LoginActivity extends ActionBarActivity {
                 databaseHelper = OpenHelperManager.getHelper(getActivity(), DatabaseHelper.class);
             }
             return databaseHelper;
+        }
+
+        private void initAnimator(int height) {
+            defaultY = mInputLinearLayout.getY();
+
+            int displayHeight = CommonUtils.getDisplayHeight(PlaceholderFragment.this.getActivity());
+            int layoutHeight = mInputLinearLayout.getMeasuredHeight();
+
+            int srcMarginBottom = (displayHeight - layoutHeight) / 2;
+            int dstMarginBottom = (height - mInputLinearLayout.getMeasuredHeight()) / 5 + (displayHeight - height) - srcMarginBottom;
+
+            upAnimator = ValueAnimator.ofFloat(mInputLinearLayout.getY(), mInputLinearLayout.getY() - dstMarginBottom);
+            upAnimator.setDuration(200);
+            upAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    mInputLinearLayout.setY((Float) animation.getAnimatedValue());
+                }
+            });
+            upAnimator.setInterpolator(new DecelerateInterpolator());
+
+            logoUpAnimator = ValueAnimator.ofFloat(mLogoImageView.getY(), mLogoImageView.getY() - dstMarginBottom);
+            logoUpAnimator.setDuration(200);
+            logoUpAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    mLogoImageView.setY((Float) animation.getAnimatedValue());
+                }
+            });
+            logoUpAnimator.setInterpolator(new DecelerateInterpolator());
+
+            downAnimator = ValueAnimator.ofFloat(mInputLinearLayout.getY() - dstMarginBottom, mInputLinearLayout.getY());
+            downAnimator.setDuration(200);
+            downAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    mInputLinearLayout.setY((Float) animation.getAnimatedValue());
+                }
+            });
+
+            logoDownAnimator = ValueAnimator.ofFloat(mLogoImageView.getY() - dstMarginBottom, mLogoImageView.getY());
+            logoDownAnimator.setDuration(200);
+            logoDownAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    mLogoImageView.setY((Float) animation.getAnimatedValue());
+                }
+            });
         }
     }
 

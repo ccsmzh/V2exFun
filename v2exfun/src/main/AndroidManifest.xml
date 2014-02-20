@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="14"
         android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -30,6 +30,7 @@
             android:name="org.gino.v2exfun.ui.TopicDetailActivity"
             android:theme="@style/AppTheme" />
         <activity
+            android:theme="@android:style/Theme.Holo.Wallpaper.NoTitleBar"
             android:name="org.gino.v2exfun.ui.LoginActivity"
             android:windowSoftInputMode="stateHidden|adjustResize"
             android:label="@string/title_activity_login" >

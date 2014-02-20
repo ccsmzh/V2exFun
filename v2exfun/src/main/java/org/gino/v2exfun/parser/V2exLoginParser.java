@@ -3,6 +3,7 @@ package org.gino.v2exfun.parser;
 import android.util.Log;
 
 import org.gino.v2exfun.constant.ComConst;
+import org.gino.v2exfun.utils.VLog;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -31,24 +32,28 @@ public class V2exLoginParser {
         return mOnce;
     }
 
-    public static boolean isLoginSucceed(String html,String userName){
-        final String tUserName = userName;
 
+    public static class LoginResponse{
+        public boolean isLogined;
+        public boolean errorMsg;
+    }
+    public static LoginResponse isLoginSucceed(String html,String userName){
+        final String tUserName = userName;
+        final LoginResponse result = new LoginResponse();
         Document document = Jsoup.parse(html);
         Elements usernameNodes = document.select("span.bigger");
         if (usernameNodes != null && usernameNodes.size() > 0){
             if(usernameNodes.select("a") != null && usernameNodes.select("a").first().text().equals(tUserName)){
                 //成功
-                return true;
+                result.isLogined = true;
             }else{
-                return false;
             }
         }else{
-            return false;
         }
+        return result;
     }
 
-    public void doLogin(Map<String,String> cookieMaps,String userName, String passWord, String once){
+    public static String doLogin(Map<String,String> cookieMaps,String userName, String passWord, String once){
         final String tUserName = userName;
         final String tPassWord = passWord;
         final String tOnce = once;
@@ -60,8 +65,12 @@ public class V2exLoginParser {
             connection.data("p",tPassWord);
             connection.data("next","/");
             Connection.Response response = connection.execute();
+            cookieMaps.putAll(response.cookies());
+            return response.body();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        return null;
     }
 }

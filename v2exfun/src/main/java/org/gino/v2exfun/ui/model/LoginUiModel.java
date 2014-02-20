@@ -1,6 +1,7 @@
 package org.gino.v2exfun.ui.model;
 
 import android.os.AsyncTask;
+import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.CookieSyncManager;
 
@@ -42,9 +43,28 @@ public class LoginUiModel extends BaseUiModel<LoginUiModelEvent> {
             @Override
             protected Object doInBackground(Object... params) {
                 HashMap<String,String> cookieMaps = new HashMap<String, String>();
-                final String mOnce = V2exLoginParser.getLoginOnceString(cookieMaps);
+                String once = null;
+                String responseStr = null;
 
+                once = V2exLoginParser.getLoginOnceString(cookieMaps);
+                if(TextUtils.isEmpty(once)){
+                    return null;
+                }
 
+                responseStr = V2exLoginParser.doLogin(cookieMaps,tUserName,tPassWord,once);
+
+                if(TextUtils.isEmpty(responseStr)){
+
+                }else{
+                    V2exLoginParser.LoginResponse result = V2exLoginParser.isLoginSucceed(responseStr, tUserName);
+                    if(result.isLogined){
+                        for (LoginUiModelEvent event : LoginUiModel.this) {
+                            V2exSession session = new V2exSession(tUserName,cookieMaps);
+                            event.onLoginSucceed(session,);
+                        }
+                    }
+
+                }
                 return null;
             }
         });
