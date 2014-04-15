@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by hongzhuo on 14-1-13.
  */
-public class LatestListUiModel extends BaseUiModel<LatestListUiModelEvent> {
+public abstract class LatestListUiModel extends BaseUiModel{
     public void showListView() {
 //        executeRequest(RequestApis.getInstance().getLatestTopics(new Response.Listener<List<Topic>>() {
 //                                                                     @Override
@@ -49,12 +49,16 @@ public class LatestListUiModel extends BaseUiModel<LatestListUiModelEvent> {
             @Override
             protected void onPostExecute(Object o) {
                 List<Topic> topics = (List<Topic>) o;
-                for (LatestListUiModelEvent event : LatestListUiModel.this) {
-                    event.onListViewShow(topics);
-                }
+//                for (LatestListUiModelEvent event : LatestListUiModel.this) {
+//                    event.onListViewShow(topics);
+//                }
+                onListViewShow(topics);
                 super.onPostExecute(o);
             }
         });
 
     }
+
+    abstract protected void onListViewShow(List<Topic> data);
+
 }

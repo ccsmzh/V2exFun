@@ -41,7 +41,15 @@ public class LatestListFragment extends BaseFragment {
         mEvent = new LatestListUiModelEvent() {
             @Override
             public void onListViewShow(List<Topic> topics) {
-                mListViewAdapter = new LatestListAdapter(getActivity(), topics);
+
+
+            }
+        };
+
+        mUIModel = new LatestListUiModel() {
+            @Override
+            protected void onListViewShow(List<Topic> data) {
+                mListViewAdapter = new LatestListAdapter(getActivity(), data);
                 mContentListView.setAdapter(mListViewAdapter);
                 mContentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
@@ -52,13 +60,11 @@ public class LatestListFragment extends BaseFragment {
                         getActivity().startActivity(intent);
                     }
                 });
-
             }
         };
-        mUIModel = new LatestListUiModel();
-        mUIModel.regEvent(mEvent);
 
         mUIModel.showListView();
+
         return view;
     }
 }

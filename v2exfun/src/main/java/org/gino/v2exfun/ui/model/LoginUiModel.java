@@ -32,8 +32,12 @@ import java.util.List;
 /**
  * Created by hongzhuo on 14-1-16.
  */
-public class LoginUiModel extends BaseUiModel<LoginUiModelEvent> {
+public class LoginUiModel {
 //    private String mOnce;
+
+    public LoginUiModel(){
+
+    }
 
     public void onLogin(String userName, String passWord) {
         final String tUserName = userName;
@@ -58,10 +62,10 @@ public class LoginUiModel extends BaseUiModel<LoginUiModelEvent> {
                 }else{
                     V2exLoginParser.LoginResponse result = V2exLoginParser.isLoginSucceed(responseStr, tUserName);
                     if(result.isLogined){
-                        for (LoginUiModelEvent event : LoginUiModel.this) {
-                            V2exSession session = new V2exSession(tUserName,cookieMaps);
-                            event.onLoginSucceed(session,);
-                        }
+//                        for (LoginUiModelEvent event : LoginUiModel.this) {
+//                            V2exSession session = new V2exSession(tUserName,cookieMaps);
+////                            event.onLoginSucceed(session,);
+//                        }
                     }
 
                 }
@@ -71,4 +75,5 @@ public class LoginUiModel extends BaseUiModel<LoginUiModelEvent> {
 
 
     }
+
 }
